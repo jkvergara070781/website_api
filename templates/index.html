@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dog Explorer</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+
+    <style>
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .card.dark-mode {
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+        }
+
+        /* Loading spinner overlay */
+        #loadingSpinner {
+            position: fixed;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Spinner -->
+    <div id="loadingSpinner">
+        <div class="spinner-border text-light" role="status"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">🐶 Dog Explorer</a>
+
+            <button class="btn btn-light" id="darkModeToggle">🌓</button>
+        </div>
+    </nav>
+
+    <div class="container text-center mt-5">
+
+        <h1 class="mb-4">Find Your Favorite Dog Breed</h1>
+
+        <!-- Breed Filter Form -->
+        <form method="get" action="/" id="breedForm" class="row justify-content-center mb-4">
+            <div class="col-6 col-md-4">
+                <select class="form-select" name="breed" onchange="document.getElementById('breedForm').submit()">
+                    <option value="random">Random</option>
+
+                    {% for breed, sub in breeds.items() %}
+                        <option value="{{ breed }}" {% if selected_breed == breed %}selected{% endif %}>
+                            {{ breed | capitalize }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+        <!-- Dog Card -->
+        <div class="card shadow mx-auto" style="max-width: 550px;">
+            <img src="{{ dog_image }}" class="card-img-top" alt="Dog Image" />
+            <div class="card-body">
+                <a href="/" class="btn btn-success btn-lg" onclick="showSpinner()">Show Another Dog</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center mt-5 p-3">
+        Built using Flask + Dog CEO API 🐾
+    </footer>
+
+    <!-- Bootstrap & Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
